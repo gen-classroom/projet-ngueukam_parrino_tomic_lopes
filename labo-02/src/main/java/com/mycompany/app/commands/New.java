@@ -1,13 +1,13 @@
 package com.mycompany.app.commands;
 
 import java.util.concurrent.Callable;
-import picocli.CommandLine.Command;
+import picocli.CommandLine;
 
 @CommandLine.Command(name = "new", description = "new")
-class New implements Callable<Integer> {
+public class New implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
-        System.out.println("new");
+        System.out.println("new command");
         return 1;
     }
 }
