@@ -11,12 +11,21 @@ import java.util.concurrent.Callable;
 
 @Command(name = "Main",
          description = "A brand new static site generator.",
-         subcommands = { New.class, Clean.class, Build.class, Serve.class } )
+         subcommands = { New.class, Clean.class, Build.class, Serve.class })
 class Main implements Callable<Integer> {
+    final static String VERSION = "0.1";
 
 
     public static void main(String... args) {
-        int exitCode = new CommandLine(new Main()).execute(args);
+
+        CommandLine cmd = new CommandLine(new Main());
+        int exitCode = 1;
+        if(cmd.isVersionHelpRequested()){
+            System.out.println("Version : " + VERSION);
+        }
+        else {
+            exitCode = cmd.execute(args);
+        }
         System.exit(exitCode);
     }
 
