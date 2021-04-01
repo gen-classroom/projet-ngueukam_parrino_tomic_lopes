@@ -62,7 +62,7 @@ public class ParserHTML {
 
             if(s.charAt(0) == '#') {// Check headers
                 if (s.substring(0, 6).contains(MarkdownSymbols.H5))
-                    result.add("<h6>" + s.substring(6) + "</h6>");
+                    result.add("<h6>" + s.substring(7) + "</h6>");
 
                 else if (s.substring(0, 5).contains(MarkdownSymbols.H5))
                     result.add("<h5>" + s.substring(6) + "</h5>");
@@ -71,13 +71,13 @@ public class ParserHTML {
                     result.add("<h4>" + s.substring(5) + "</h4>");
 
                 else if(s.substring(0, 3).contains(MarkdownSymbols.H3))
-                    result.add("<h3>" + s.substring(5) + "</h3>");
+                    result.add("<h3>" + s.substring(4) + "</h3>");
 
                 else if(s.substring(0, 2).contains(MarkdownSymbols.H2))
-                    result.add("<h2>" + s.substring(5) + "</h2>");
+                    result.add("<h2>" + s.substring(3) + "</h2>");
 
                 else if(s.substring(0, 1).contains(MarkdownSymbols.H1))
-                    result.add("<h1>" + s.substring(5) + "</h1>");
+                    result.add("<h1>" + s.substring(2) + "</h1>");
             }
             else if(matcher.lookingAt()){ //Check img
                 int startAlt = 2;
