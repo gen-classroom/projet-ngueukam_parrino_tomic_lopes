@@ -35,7 +35,7 @@ Here is a list of available commands:
 
 * Create a basic project
  
- `statique init PATH`
+   `statique init PATH`
 
  * Create static HTML site
 
