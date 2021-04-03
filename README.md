@@ -34,18 +34,23 @@ The following technologies were used to develop the project:
 Here is a list of available commands: 
 
 * Create a basic project
+* 
  `statique init PATH`
  
  * Create static HTML site
+ * 
  `statique build PATH`
  
  * Clear current project
+ * 
  `statique clean PATH`
 
 * See current version
+* 
  `statique --version`
  
 * Coming soon
+* 
  `statique serve PATH`
 
 After creating the template with the `init` command, you can edit the index.md according to your needs, and then use the ``build`` command to create your static site.
