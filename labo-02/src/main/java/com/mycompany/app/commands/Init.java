@@ -10,7 +10,7 @@ import picocli.CommandLine;
 @CommandLine.Command(name = "init", description = "Commande de initialisation")
 public class Init implements Callable<Integer> {
 
-    @CommandLine.Parameters(index="0") String path;
+    @CommandLine.Parameters(index="0") String userPath;
 
     @Override
     public Integer call() throws Exception {
@@ -20,7 +20,7 @@ public class Init implements Callable<Integer> {
 
     public void initFolder() {
         String pathInitFolder = System.getProperty("user.dir");
-        String[] folders = path.split("/");
+        String[] folders = userPath.split("/");
         File file = new File(pathInitFolder + "/");
         for (int i = 0; i < folders.length; i++) {
             file = new File(pathInitFolder + "/" + folders[i]);
