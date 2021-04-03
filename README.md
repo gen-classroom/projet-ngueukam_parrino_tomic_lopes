@@ -86,8 +86,11 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Contact
 
 Parrino Alessandro : alessandro.parrino@heig-vd.ch
+
 Rui Filipe: rui.lopesgouveia@heig-vd.ch
+
 Tomic Mario: mario.tomic@heig-vd.ch
+
 Wilfried Karel: wilfriedkarel.ngueukamdjeuda@heig-vd.ch
 
 Project Link: https://github.com/gen-classroom/projet-ngueukam_parrino_tomic_lopes
