@@ -1,10 +1,6 @@
 package com.mycompany.app.commands;
 
-
 import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.IVersionProvider;
-import picocli.CommandLine.Option;
 
 import java.util.concurrent.Callable;
 
@@ -12,8 +8,10 @@ import java.util.concurrent.Callable;
 public class Version implements Callable<Integer> {
 
     private final String VERSION = "0.0.1";
+
     @Override
-    public Integer call() throws Exception {
+    public Integer call() {
+        //Print Version
         System.out.println("version : " + VERSION);
         return 0;
     }

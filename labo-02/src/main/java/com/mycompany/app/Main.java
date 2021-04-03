@@ -7,8 +7,8 @@ import picocli.CommandLine.Command;
 import java.util.concurrent.Callable;
 
 @Command(name = "Main",
-         description = "A brand new static site generator.",
-         subcommands = { Init.class, Clean.class, Build.class, Serve.class, Version.class})
+        description = "A brand new static site generator.",
+        subcommands = {Init.class, Clean.class, Build.class, Serve.class, Version.class})
 class Main implements Callable<Integer> {
 
 
@@ -19,11 +19,9 @@ class Main implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
+        //If user enter wrong command
         CommandLine.usage(this, System.out);
         return 0;
     }
-
-
-
 
 }
