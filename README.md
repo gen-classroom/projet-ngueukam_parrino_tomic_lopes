@@ -20,7 +20,7 @@ The following technologies were used to develop the project:
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/gen-classroom/projet-ngueukam_parrino_tomic_lopes.git
    ```
 2. Open a terminal and run
    ```sh
