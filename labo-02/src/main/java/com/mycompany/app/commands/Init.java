@@ -4,8 +4,11 @@ import java.util.concurrent.Callable;
 import picocli.CommandLine;
 import com.mycompany.app.Utils.GenerateFolders;
 
-@CommandLine.Command(name = "init", description = "init")
+@CommandLine.Command(name = "init", description = "Commande de initialisation")
 public class Init implements Callable<Integer> {
+
+    @CommandLine.Parameters(index="0") String path;
+
     @Override
     public Integer call() throws Exception {
         initFolder();
@@ -13,7 +16,7 @@ public class Init implements Callable<Integer> {
     }
 
     public void initFolder() {
-        new GenerateFolders().generatedFiles();
+        new GenerateFolders(path).generatedFiles();
     }
 
 }
