@@ -44,7 +44,7 @@ public class ParserHTML {
         }
     }
 
-    void toHTML( String path ) throws IOException {
+    public ArrayList<String> toHTML( String path ) throws IOException {
 
         //Get all lines of file
         getInput(path);
@@ -91,19 +91,7 @@ public class ParserHTML {
                 result.add("<p>"+ s + "</p>");
             }
         }
-
-        //Write result in ./data
-        FileWriter writer = new FileWriter("./data/output.html");
-        for(String str: result) {
-            writer.write(str + System.lineSeparator());
-        }
-        writer.close();
-
+        return result;
     }
 
-    public static void main(String[] args) throws IOException {
-        //TEST
-        ParserHTML p = new ParserHTML();
-        p.toHTML("./data/test.md");
-    }
 }
