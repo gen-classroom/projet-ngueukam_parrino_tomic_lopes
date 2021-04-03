@@ -58,6 +58,7 @@ auteur: Nom Prenom
 date: YY-MM-DD
    ```
 **Delimiter**
+
 ``---``
 
 **Content**
