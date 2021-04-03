@@ -20,6 +20,7 @@ public class ParserHTML {
 
     //Get all lines of file
     void getInput(String path ){
+        boolean canWrite = false;
 
         InputStream ins = null; // raw byte-stream
         Reader r = null; // cooked reader
@@ -30,7 +31,10 @@ public class ParserHTML {
             r = new InputStreamReader(ins, "UTF-8"); // leave charset out for default
             br = new BufferedReader(r);
             while ((s = br.readLine()) != null) {
-                lines.add(s);
+                if(canWrite)
+                    lines.add(s);
+                if(s.contains("---"))
+                    canWrite = true;
             }
         }
         catch (Exception e)

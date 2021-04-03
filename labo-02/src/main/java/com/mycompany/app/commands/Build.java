@@ -56,18 +56,18 @@ public class Build implements Callable<Integer> {
         ArrayList<String> result = new ArrayList<>();
 
         ParserHTML parser = new ParserHTML();
-        result = parser.toHTML(path + "/dossier/page.md");
+      /*  result = parser.toHTML(path + "/dossier/page.md");
 
         FileWriter writer = new FileWriter(path + "/build/dossier/page.html");
         for (String str : result) {
             writer.write(str + System.lineSeparator());
         }
-        writer.close();
+        writer.close();*/
 
 
         result = parser.toHTML(path + "/index.md");
 
-        writer = new FileWriter(path + "/build/index.html");
+        FileWriter writer = new FileWriter(path + "/build/index.html");
         for (String str : result) {
             writer.write(str + System.lineSeparator());
         }

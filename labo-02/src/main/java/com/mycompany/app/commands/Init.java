@@ -33,10 +33,14 @@ public class Init implements Callable<Integer> {
         File indexFile = new File(file.getAbsolutePath() + "/index.md");
 
         String indexPage =
+                "titre: Mon premier article\n" +
+                "auteur: Jonh Cena\n" +
+                "date: 2021-03-10\n" +
+                "---\n" +
                 "# Mon premier article\n" +
                 "## Mon sous-titre\n" +
-                "le contenu de mon article"
-                +"![Une image](./image.png)";
+                "le contenu de mon article\n"
+                +"![Une image](./image.png)\n";
         try {
             FileWriter myWriter = new FileWriter(indexFile);
             myWriter.write(indexPage);
