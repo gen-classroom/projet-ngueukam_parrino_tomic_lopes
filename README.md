@@ -47,7 +47,7 @@ Here is a list of available commands:
 
 * See current version
 
-   `statique --version`
+   `statique -version`
 
 * Coming soon
  
