@@ -20,6 +20,7 @@ public class ParserHTML {
 
     //Get all lines of file
     void getInput(String path ){
+        boolean canWrite = false;
 
         InputStream ins = null; // raw byte-stream
         Reader r = null; // cooked reader
@@ -30,7 +31,10 @@ public class ParserHTML {
             r = new InputStreamReader(ins, "UTF-8"); // leave charset out for default
             br = new BufferedReader(r);
             while ((s = br.readLine()) != null) {
-                lines.add(s);
+                if(canWrite)
+                    lines.add(s);
+                if(s.contains("---"))
+                    canWrite = true;
             }
         }
         catch (Exception e)
@@ -44,7 +48,7 @@ public class ParserHTML {
         }
     }
 
-    void toHTML( String path ) throws IOException {
+    public ArrayList<String> toHTML( String path ) throws IOException {
 
         //Get all lines of file
         getInput(path);
@@ -91,19 +95,7 @@ public class ParserHTML {
                 result.add("<p>"+ s + "</p>");
             }
         }
-
-        //Write result in ./data
-        FileWriter writer = new FileWriter("./data/output.html");
-        for(String str: result) {
-            writer.write(str + System.lineSeparator());
-        }
-        writer.close();
-
+        return result;
     }
 
-    public static void main(String[] args) throws IOException {
-        //TEST
-        ParserHTML p = new ParserHTML();
-        p.toHTML("./data/test.md");
-    }
 }
