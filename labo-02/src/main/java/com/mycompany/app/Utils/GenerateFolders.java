@@ -5,8 +5,9 @@ import java.io.IOException;
 
 public class GenerateFolders {
     String initFolder;
-    public GenerateFolders() {
-        this.initFolder = "/mon/site";
+
+    public GenerateFolders(String path) {
+        this.initFolder = path;
     }
 
     public void generatedFiles () {
