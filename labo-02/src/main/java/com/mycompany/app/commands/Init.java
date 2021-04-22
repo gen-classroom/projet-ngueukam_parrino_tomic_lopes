@@ -36,18 +36,18 @@ public class Init implements Callable<Integer> {
 
         String layoutData = "<html lang=\"en\">\n" +
                             "<head>\n" +
-                            "<meta charset=\"utf-8\">\n" +
-                            "<title>{{ site.titre }} | {{ page.titre }}</title>\n" +
+                            "\t<meta charset=\"utf-8\">\n" +
+                            "\t<title>{{ site.titre }} | {{ page.titre }}</title>\n" +
                             "</head>\n" +
                             "<body>\n" +
-                            "{% include menu.html }\n" +
-                            "{{ content }}\n" +
+                            "\t{% include menu.html }\n" +
+                            "\t{{ content }}\n" +
                             "</body>\n" +
                             "</html>";
 
         String menuData = "<ul>\n" +
-                          "<li><a href=\"/index.html\">home</a></li>\n" +
-                          "<li><a href=\"/content/page.html\">page</a></li>\n" +
+                          "\t<li><a href=\"/index.html\">home</a></li>\n" +
+                          "\t<li><a href=\"/content/page.html\">page</a></li>\n" +
                           "</ul>";
 
         String imageData = "";
