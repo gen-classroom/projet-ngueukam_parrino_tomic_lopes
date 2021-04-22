@@ -21,23 +21,8 @@ public class Init implements Callable<Integer> {
 
     public void initFolder() {
 
-        String pathInitFolder = System.getProperty("user.dir");
-
-        String[] folders = userPath.split("/");
-
-        File file = new File(pathInitFolder + "/");
-        for (int i = 0; i < folders.length; i++) {
-            file = new File(pathInitFolder + "/" + folders[i]);
-            if (!file.exists()) {
-                file.mkdir();
-            }
-            pathInitFolder += "/" + folders[i];
-        }
-
-        File configFile = new File(file.getAbsolutePath() + "/config.json");
-        File indexFile = new File(file.getAbsolutePath() + "/index.md");
-
-        String indexPage =
+        String indexTemplate = "";
+        String pageTemplate =
                 "titre: Mon premier article\n" +
                         "auteur: Nom Prenom\n" +
                         "date: YY-MM-DD\n" +
@@ -46,40 +31,108 @@ public class Init implements Callable<Integer> {
                         "## Mon sous-titre\n" +
                         "le contenu de mon article\n"
                         + "![Une image](./image.png)\n";
-        try {
-            FileWriter myWriter = new FileWriter(indexFile);
-            myWriter.write(indexPage);
-            myWriter.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
+
+        String configData = "{\n" + "\"domaine\": \"www.mon-site.com\"\n" + "\"titre\": \"\"Mon site\"\"\n" + "}";
+
+        String layoutData = "<html lang=\"en\">\n" +
+                            "<head>\n" +
+                            "<meta charset=\"utf-8\">\n" +
+                            "<title>{{ site.titre }} | {{ page.titre }}</title>\n" +
+                            "</head>\n" +
+                            "<body>\n" +
+                            "{% include menu.html }\n" +
+                            "{{ content }}\n" +
+                            "</body>\n" +
+                            "</html>";
+
+        String menuData = "<ul>\n" +
+                          "<li><a href=\"/index.html\">home</a></li>\n" +
+                          "<li><a href=\"/content/page.html\">page</a></li>\n" +
+                          "</ul>";
+
+        String imageData = "";
+
+        String pathInitFolder = System.getProperty("user.dir");
+
+        String[] folders = userPath.split("/");
 
         try {
-            if (configFile.createNewFile()) {
-                System.out.println(configFile.getAbsolutePath());
+            File file = new File(pathInitFolder + "/");
+            for (int i = 0; i < folders.length; i++) {
+                file = new File(pathInitFolder + "/" + folders[i]);
+                if (!file.exists()) {
+                    file.mkdir();
+                }
+                pathInitFolder += "/" + folders[i];
             }
-            if (indexFile.createNewFile()) {
-                System.out.println(indexFile.getAbsolutePath());
+
+            File configFile = new File(file.getAbsolutePath() + "/config.json");
+            File indexFile = new File(file.getAbsolutePath() + "/index.md");
+
+            String path = file.getAbsolutePath();
+
+            File folderContent = new File(path + "/content");
+            if (!folderContent.exists())
+                folderContent.mkdir();
+
+            File pageFile = new File(folderContent.getAbsolutePath() + "/page.md");
+
+
+            File imageFile = new File(folderContent.getAbsolutePath() + "/image.png");
+
+
+            File folderTemplate = new File(path + "/template");
+            if (!folderTemplate.exists())
+                folderTemplate.mkdir();
+
+            File menuFile = new File(folderTemplate.getAbsolutePath() + "/menu.html");
+
+
+            File layoutFile = new File(folderTemplate.getAbsolutePath() + "/layout.html");
+
+            try {//WRITING
+
+                //page.md
+                FileWriter myWriter = new FileWriter(indexFile);
+                myWriter.write(indexTemplate);
+                myWriter.close();
+
+                //page.md
+                myWriter = new FileWriter(pageFile);
+                myWriter.write(pageTemplate);
+                myWriter.close();
+                //config.json
+                myWriter = new FileWriter(configFile);
+                myWriter.write(configData);
+                myWriter.close();
+                //layout.html
+                myWriter = new FileWriter(layoutFile);
+                myWriter.write(layoutData);
+                myWriter.close();
+                //menu.html
+                myWriter = new FileWriter(menuFile);
+                myWriter.write(menuData);
+                myWriter.close();
+                //image.png
+                myWriter = new FileWriter(imageFile);
+                myWriter.write(imageData);
+                myWriter.close();
+
+
+                System.out.println("Successfully wrote to the file.");
+
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
             }
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+
+        } catch( Exception e) {
+            System.out.println("An error occurred in files creations");
         }
 
-        file = new File(file.getAbsolutePath() + "/dossier");
-        if (!file.exists())
-            file.mkdir();
 
-        file = new File(file.getAbsolutePath() + "/page.md");
-        try {
-            if (file.createNewFile()) {
-                System.out.println(file.getAbsolutePath());
-                System.out.println("File page.md créé");
-            }
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+
+
     }
 
 
