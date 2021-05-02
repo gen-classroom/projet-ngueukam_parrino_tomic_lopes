@@ -6,7 +6,13 @@ import java.io.IOException;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
 
+import static com.mycompany.app.config.AppPaths.CONTENT;
+import static com.mycompany.app.config.AppPaths.TEMPLATE;
+import static com.mycompany.app.config.AppTemplates.*;
 
+/**
+ *
+ */
 @CommandLine.Command(name = "init", description = "Initialise projet")
 public class Init implements Callable<Integer> {
 
@@ -15,86 +21,58 @@ public class Init implements Callable<Integer> {
 
     @Override
     public Integer call() {
-        initFolder();
+        initializeApp();
         return 1;
     }
 
-    public void initFolder() {
+    /**
+     * Create base folders and files
+     */
+    private void initializeApp() {
 
-        String indexTemplate = "";
-        String pageTemplate =
-                "titre: Mon premier article\n" +
-                        "auteur: Nom Prenom\n" +
-                        "date: YY-MM-DD\n" +
-                        "---\n" +
-                        "# Mon premier article\n" +
-                        "## Mon sous-titre\n" +
-                        "le contenu de mon article\n"
-                        + "![Une image](./image.png)\n";
 
-        String configData = "{\n" + "\"domaine\": \"www.mon-site.com\"\n" + "\"titre\": \"\"Mon site\"\"\n" + "}";
+        String pathInitFolder = "";
 
-        String layoutData = "<html lang=\"en\">\n" +
-                            "<head>\n" +
-                            "\t<meta charset=\"utf-8\">\n" +
-                            "\t<title>{{ site.titre }} | {{ page.titre }}</title>\n" +
-                            "</head>\n" +
-                            "<body>\n" +
-                            "\t{% include menu.html }\n" +
-                            "\t{{ content }}\n" +
-                            "</body>\n" +
-                            "</html>";
-
-        String menuData = "<ul>\n" +
-                          "\t<li><a href=\"/index.html\">home</a></li>\n" +
-                          "\t<li><a href=\"/content/page.html\">page</a></li>\n" +
-                          "</ul>";
-
-        String imageData = "";
-
-        String pathInitFolder = System.getProperty("user.dir");
-
+        //QUESTION: IL faut aussi prevoir "\" (linux) ??
         String[] folders = userPath.split("/");
 
         try {
-            File file = new File(pathInitFolder + "/");
-            for (int i = 0; i < folders.length; i++) {
-                file = new File(pathInitFolder + "/" + folders[i]);
+
+            // Create folder passed in arguments (Ex. mon/site/)
+            File file = new File(pathInitFolder + "\\");
+            for (String folder : folders) {
+                file = new File(pathInitFolder + "\\" + folder);
                 if (!file.exists()) {
                     file.mkdir();
                 }
-                pathInitFolder += "/" + folders[i];
+                pathInitFolder += "/" + folder;
             }
 
             File configFile = new File(file.getAbsolutePath() + "/config.json");
             File indexFile = new File(file.getAbsolutePath() + "/index.md");
 
-            String path = file.getAbsolutePath();
 
-            File folderContent = new File(path + "/content");
+            // Content folder and files
+            File folderContent = new File(pathInitFolder + CONTENT);
             if (!folderContent.exists())
                 folderContent.mkdir();
 
             File pageFile = new File(folderContent.getAbsolutePath() + "/page.md");
-
-
             File imageFile = new File(folderContent.getAbsolutePath() + "/image.png");
 
-
-            File folderTemplate = new File(path + "/template");
+            // Template folder and files
+            File folderTemplate = new File(pathInitFolder + TEMPLATE);
             if (!folderTemplate.exists())
                 folderTemplate.mkdir();
 
             File menuFile = new File(folderTemplate.getAbsolutePath() + "/menu.html");
-
-
             File layoutFile = new File(folderTemplate.getAbsolutePath() + "/layout.html");
 
             try {//WRITING
 
                 //page.md
                 FileWriter myWriter = new FileWriter(indexFile);
-                myWriter.write(indexTemplate);
+                myWriter.write("indexTemplate");
                 myWriter.close();
 
                 //page.md
@@ -103,19 +81,19 @@ public class Init implements Callable<Integer> {
                 myWriter.close();
                 //config.json
                 myWriter = new FileWriter(configFile);
-                myWriter.write(configData);
+                myWriter.write(configJSON);
                 myWriter.close();
                 //layout.html
                 myWriter = new FileWriter(layoutFile);
-                myWriter.write(layoutData);
+                myWriter.write(layoutTemplate);
                 myWriter.close();
                 //menu.html
                 myWriter = new FileWriter(menuFile);
-                myWriter.write(menuData);
+                myWriter.write(menuTemplate);
                 myWriter.close();
                 //image.png
                 myWriter = new FileWriter(imageFile);
-                myWriter.write(imageData);
+                myWriter.write("");
                 myWriter.close();
 
 
@@ -134,6 +112,5 @@ public class Init implements Callable<Integer> {
 
 
     }
-
 
 }
