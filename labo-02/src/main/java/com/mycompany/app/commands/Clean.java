@@ -4,6 +4,9 @@ import picocli.CommandLine;
 import java.io.File;
 import java.util.concurrent.Callable;
 
+/**
+ *
+ */
 @CommandLine.Command(name = "clean", description = "Clear project")
 public class Clean implements Callable<Integer> {
 
@@ -12,13 +15,17 @@ public class Clean implements Callable<Integer> {
     String userPath;
 
     @Override
-    public Integer call() throws Exception {
+    public Integer call() {
         cleanProject();
         return 1;
     }
 
-    //Delete directory
-    boolean deleteDirectory(File directoryToBeDeleted) {
+    /**
+     *
+     * @param directoryToBeDeleted
+     * @return
+     */
+    private boolean deleteDirectory(File directoryToBeDeleted) {
         File[] allContents = directoryToBeDeleted.listFiles();
         if (allContents != null) {
             for (File file : allContents) {
@@ -28,8 +35,10 @@ public class Clean implements Callable<Integer> {
         return directoryToBeDeleted.delete();
     }
 
-
-    void cleanProject() {
+    /**
+     *
+     */
+    private void cleanProject() {
         // Get Path
         String path = System.getProperty("user.dir") + userPath;
 

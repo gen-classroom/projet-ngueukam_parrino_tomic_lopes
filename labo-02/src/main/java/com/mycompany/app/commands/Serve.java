@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
+/**
+ *
+ */
 @CommandLine.Command(name = "serve", description = "serve")
 public class Serve implements Callable<Integer> {
 
@@ -16,7 +19,7 @@ public class Serve implements Callable<Integer> {
     @Override
     public Integer call() {
 //        System.out.println("serve command on " + userPath);
-        String path = System.getProperty("user.dir") + userPath;
+        String path = userPath;
         File root = new File(path);
         // On récupère le dossier build
         File buildDirectory = getBuildFolder(root);

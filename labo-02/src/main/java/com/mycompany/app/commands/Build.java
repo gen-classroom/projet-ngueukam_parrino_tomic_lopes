@@ -1,15 +1,23 @@
 package com.mycompany.app.commands;
 
-import com.mycompany.app.parser.ParserHTML;
+import com.google.gson.Gson;
+import com.mycompany.app.config.AppConfiguration;
+import com.mycompany.app.engine.Engine;
+import com.mycompany.app.entities.Metadata;
+import com.mycompany.app.parser.MDParser;
 import picocli.CommandLine;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
+import static com.mycompany.app.config.AppPaths.*;
+
+/**
+ *
+ */
 @CommandLine.Command(name = "build", description = "Build project")
 public class Build implements Callable<Integer> {
+
     //Get user path
     @CommandLine.Parameters(index = "0")
     String userPath;
@@ -20,20 +28,26 @@ public class Build implements Callable<Integer> {
         return 1;
     }
 
-    void initBuild() {
+    /**
+     *
+     */
+    private void initBuild() {
 
         // Get Path
-        String path = System.getProperty("user.dir") + userPath;
+        String path = userPath;
 
         try {
-            // Create Folders
-            new File(path + "/build").mkdir();
-            new File(path + "/build/dossier").mkdir();
 
-            // Create Files
-            new File(path + "/build/index.html").createNewFile();
-            new File(path + "/build/dossier/page.html").createNewFile();
-            new File(path + "/build/dossier/image.png").createNewFile();
+            path += BUILD;
+            // Create Folders and files for build command
+            new File(path).mkdir();
+            new File(path +"/index.html").createNewFile();
+
+            path += "\\content";
+            new File(path).mkdir();
+
+            new File(path + "\\page.html").createNewFile();
+            new File(path + "\\image.png").createNewFile();
 
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -42,25 +56,61 @@ public class Build implements Callable<Integer> {
 
     }
 
-    void buildProject() throws IOException {
-
-        // Get Path
-        String path = System.getProperty("user.dir") + userPath;
+    /**
+     *
+     * @throws Exception
+     */
+    private void buildProject() throws Exception {
 
         initBuild();
 
-        ArrayList<String> result = new ArrayList<>();
+        MDParser parser = new MDParser( userPath + CONTENT + "\\page.md");
+        Metadata meta = createMetadataObject(parser.getMetadata());
+        ArrayList<String> content = parser.getResultHTML();
+        AppConfiguration config = createConfigObject();
 
-        ParserHTML parser = new ParserHTML();
 
-        result = parser.toHTML(path + "/index.md");
+        Engine engine = new Engine(userPath + TEMPLATE);
+        engine.addMetadata(meta);
+        engine.addContent(content);
+        engine.addConfiguration(config);
+        engine.write(userPath + BUILD + CONTENT +"/page.html");
 
-        FileWriter writer = new FileWriter(path + "/build/index.html");
-        for (String str : result) {
-            writer.write(str + System.lineSeparator());
+    }
+
+    /**
+     *
+     * @param metadata
+     * @return
+     */
+    private Metadata createMetadataObject(ArrayList<String> metadata){
+        for(int i = 0; i < metadata.size(); ++i) {
+            int index = metadata.get(i).indexOf(':');
+            metadata.set(i, metadata.get(i).substring(index + 1));//+1 for blank space
         }
-        writer.close();
+        String title = metadata.get(0);
+        String author = metadata.get(1);
+        String date = metadata.get(2);
 
+        return new Metadata(title,author,date);
+    }
+
+    /**
+     *
+     * @return
+     */
+    private AppConfiguration createConfigObject(){
+        Gson gson = new Gson();
+        Reader reader = null;
+        try {
+             reader = new FileReader(userPath + "/config.json");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        assert reader != null; //for warning
+
+        return gson.fromJson(reader, AppConfiguration.class);
     }
 
 }
