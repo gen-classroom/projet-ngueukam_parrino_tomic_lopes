@@ -1,5 +1,8 @@
 package com.mycompany.app.parser;
 
+/**
+ *
+ */
 public class MarkdownSymbols {
     public static final String H1  = "#";
     public static final String H2  = "##";
