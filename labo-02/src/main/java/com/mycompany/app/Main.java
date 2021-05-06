@@ -6,7 +6,7 @@ import picocli.CommandLine.Command;
 
 import java.util.concurrent.Callable;
 
-@Command(name = "Main",
+@Command(name = "statique",
         description = "A brand new static site generator.",
         subcommands = {Init.class, Clean.class, Build.class, Serve.class, Version.class})
 class Main implements Callable<Integer> {
