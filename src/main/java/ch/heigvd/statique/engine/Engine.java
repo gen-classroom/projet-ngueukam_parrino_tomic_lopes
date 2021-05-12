@@ -56,15 +56,16 @@ public class Engine {
      * @param path
      * @throws Exception
      */
-    public void write(String path) throws Exception {
+    public void write(String path, String layout) throws Exception {
 
         /* Get the template (uses cache internally) */
-        Template temp = cfg.getTemplate("layout.html");
+        Template temp = cfg.getTemplate(layout);
 
         /* Merge data-model with template */
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
         temp.process(root, writer);
         writer.close();
+        root.clear();//Reset map when finished
     }
 
 }

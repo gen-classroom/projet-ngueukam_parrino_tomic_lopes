@@ -20,7 +20,7 @@ public class Init implements Callable<Integer> {
     String userPath;
 
     @Override
-    public Integer call() {
+    public Integer call() throws IOException {
         initializeApp();
         return 1;
     }
@@ -28,7 +28,7 @@ public class Init implements Callable<Integer> {
     /**
      * Create base folders and files
      */
-    private void initializeApp() {
+    private void initializeApp() throws IOException {
 
 
         String pathInitFolder = "";
@@ -38,18 +38,18 @@ public class Init implements Callable<Integer> {
 
         try {
 
-            // Create folder passed in arguments (Ex. mon/site/)
-            File file = new File(pathInitFolder + "\\");
-            for (String folder : folders) {
-                file = new File(pathInitFolder + "\\" + folder);
+            for (int i =0; i < folders.length; ++i) {
+                pathInitFolder += folders[i];
+                File file = new File(pathInitFolder);
                 if (!file.exists()) {
                     file.mkdir();
                 }
-                pathInitFolder += "/" + folder;
+                if(i != folders.length - 1)
+                    pathInitFolder += "\\";
             }
 
-            File configFile = new File(file.getAbsolutePath() + "/config.json");
-            File indexFile = new File(file.getAbsolutePath() + "/index.md");
+            File configFile = new File(pathInitFolder + "\\config.json");
+            File indexFile = new File(pathInitFolder + "\\index.md");
 
 
             // Content folder and files
@@ -57,24 +57,25 @@ public class Init implements Callable<Integer> {
             if (!folderContent.exists())
                 folderContent.mkdir();
 
-            File pageFile = new File(folderContent.getAbsolutePath() + "/page.md");
-            File imageFile = new File(folderContent.getAbsolutePath() + "/image.png");
+            File pageFile = new File(folderContent.getAbsolutePath() + "\\page.md");
+            File imageFile = new File(folderContent.getAbsolutePath() + "\\image.png");
 
             // Template folder and files
             File folderTemplate = new File(pathInitFolder + TEMPLATE);
             if (!folderTemplate.exists())
                 folderTemplate.mkdir();
 
-            File menuFile = new File(folderTemplate.getAbsolutePath() + "/menu.html");
-            File layoutFile = new File(folderTemplate.getAbsolutePath() + "/layout.html");
+            File menuIndexFile = new File(folderTemplate.getAbsolutePath() + "\\menuIndex.html");
+            File menuPageFile = new File(folderTemplate.getAbsolutePath() + "\\menuPage.html");
+            File layoutIndexFile = new File(folderTemplate.getAbsolutePath() + "\\layoutIndex.html");
+            File layoutPageFile = new File(folderTemplate.getAbsolutePath() + "\\layoutPage.html");
 
             try {//WRITING
 
-                //page.md
+                //index.md
                 FileWriter myWriter = new FileWriter(indexFile);
-                myWriter.write("indexTemplate");
+                myWriter.write(indexTemplate);
                 myWriter.close();
-
                 //page.md
                 myWriter = new FileWriter(pageFile);
                 myWriter.write(pageTemplate);
@@ -83,13 +84,21 @@ public class Init implements Callable<Integer> {
                 myWriter = new FileWriter(configFile);
                 myWriter.write(configJSON);
                 myWriter.close();
-                //layout.html
-                myWriter = new FileWriter(layoutFile);
-                myWriter.write(layoutTemplate);
+                //layoutIndex.html
+                myWriter = new FileWriter(layoutIndexFile);
+                myWriter.write(layoutIndexTemplate);
                 myWriter.close();
-                //menu.html
-                myWriter = new FileWriter(menuFile);
-                myWriter.write(menuTemplate);
+                //layoutPage.html
+                myWriter = new FileWriter(layoutPageFile);
+                myWriter.write(layoutPageTemplate);
+                myWriter.close();
+                //menuIndex.html
+                myWriter = new FileWriter(menuIndexFile);
+                myWriter.write(menuIndexTemplate);
+                myWriter.close();
+                //menuPage.html
+                myWriter = new FileWriter(menuPageFile);
+                myWriter.write(menuPageTemplate);
                 myWriter.close();
                 //image.png
                 myWriter = new FileWriter(imageFile);

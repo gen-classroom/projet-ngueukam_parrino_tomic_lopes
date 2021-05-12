@@ -64,18 +64,29 @@ public class Build implements Callable<Integer> {
 
         initBuild();
 
-        MDParser parser = new MDParser( userPath + CONTENT + "\\page.md");
+        Engine engine = new Engine(userPath + TEMPLATE);
+
+        MDParser parser = new MDParser(userPath + "\\index.md");
         Metadata meta = createMetadataObject(parser.getMetadata());
         ArrayList<String> content = parser.getResultHTML();
         AppConfiguration config = createConfigObject();
 
-
-        Engine engine = new Engine(userPath + TEMPLATE);
         engine.addMetadata(meta);
         engine.addContent(content);
         engine.addConfiguration(config);
-        engine.write(userPath + BUILD + CONTENT +"/page.html");
 
+        engine.write(userPath + BUILD + "/index.html", "layoutIndex.html");
+
+        parser = new MDParser(userPath + CONTENT + "\\page.md");
+        meta = createMetadataObject(parser.getMetadata());
+        content = parser.getResultHTML();
+        config = createConfigObject();
+
+        engine.addMetadata(meta);
+        engine.addContent(content);
+        engine.addConfiguration(config);
+
+        engine.write(userPath + BUILD + CONTENT + "/page.html", "layoutPage.html");
     }
 
     /**
