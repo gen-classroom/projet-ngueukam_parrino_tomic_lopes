@@ -54,6 +54,8 @@ Here is a list of available commands:
  
    `statique serve PATH`
 
+* N.B. the `PATH` must begin without the symbol "/" &#8594; Ex: `mon/site`
+
 After creating the template with the `init` command, you can edit the index.md according to your needs, and then use the ``build`` command to create your static site.
 Here is the structure of the base sheet :
 
