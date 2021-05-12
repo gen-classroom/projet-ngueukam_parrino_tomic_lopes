@@ -10,6 +10,7 @@ The following technologies were used to develop the project:
 * [Maven](https://maven.apache.org/)
 * [picocli](https://picocli.info/)
 * [JUnit 5](https://junit.org/junit5/)
+* [Freemarker](https://freemarker.apache.org/)
 
 
 
@@ -49,7 +50,7 @@ Here is a list of available commands:
 
    `statique -version`
 
-* Coming soon
+* Open the site in your browser by default
  
    `statique serve PATH`
 
