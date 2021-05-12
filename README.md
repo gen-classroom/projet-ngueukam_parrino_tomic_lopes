@@ -1,4 +1,4 @@
-**Authors:** Parrino Alessandro, Rui Filipe, Tomic Mario and Wilfried Karel.
+**Authors:** Parrino Alessandro, Rui Filipe Lopes Gouveia, Tomic Mario and Ngueukam Djeuda Wilfried Karel.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -92,10 +92,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Parrino Alessandro : alessandro.parrino@heig-vd.ch
 
-Rui Filipe: rui.lopesgouveia@heig-vd.ch
+Rui Filipe Lopes Gouveia: rui.lopesgouveia@heig-vd.ch
 
 Tomic Mario: mario.tomic@heig-vd.ch
 
-Wilfried Karel: wilfriedkarel.ngueukamdjeuda@heig-vd.ch
+Ngueukam Djeuda Wilfried Karel: wilfriedkarel.ngueukamdjeuda@heig-vd.ch
 
 Project Link: https://github.com/gen-classroom/projet-ngueukam_parrino_tomic_lopes
