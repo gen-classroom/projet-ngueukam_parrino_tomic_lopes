@@ -1,4 +1,4 @@
-**Authors:** Parrino Alessandro, Rui Filipe, Tomic Mario and Wilfried Karel.
+**Authors:** Parrino Alessandro, Rui Filipe Lopes Gouveia, Tomic Mario and Ngueukam Djeuda Wilfried Karel.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
