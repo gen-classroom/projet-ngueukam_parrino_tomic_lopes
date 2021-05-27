@@ -20,7 +20,7 @@ public class MDParser {
     final ArrayList<String> resultHTML = new ArrayList<>();
 
     /**
-     * Constructeur
+     * Constructor
      * @param path
      */
     public MDParser(String path){
@@ -33,7 +33,7 @@ public class MDParser {
      */
     private void getDataFromMD(String path) {
         boolean isContent = false;
-        BufferedReader bufferedReader = null; // buffered for readLine()
+        BufferedReader bufferedReader = null;
 
         try {
             String line;
@@ -50,7 +50,7 @@ public class MDParser {
                     metadata.add(line);
             }
         } catch (Exception e) {
-            System.err.println(e.getMessage()); // handle exception
+            System.err.println(e.getMessage());
         } finally {
             if (bufferedReader != null) {
                 try {
@@ -81,22 +81,22 @@ public class MDParser {
             Matcher matcher = pattern.matcher(s);
 
             if (s.charAt(0) == '#') {// Check headers
-                if (s.substring(0, 6).contains(MarkdownSymbols.H5))
+                if (s.substring(0, 6).contains(MarkdownHeaders.H5))
                     resultHTML.add("<h6>" + s.substring(7) + "</h6>\n");
 
-                else if (s.substring(0, 5).contains(MarkdownSymbols.H5))
+                else if (s.substring(0, 5).contains(MarkdownHeaders.H5))
                     resultHTML.add("<h5>" + s.substring(6) + "</h5>\n");
 
-                else if (s.substring(0, 4).contains(MarkdownSymbols.H4))
+                else if (s.substring(0, 4).contains(MarkdownHeaders.H4))
                     resultHTML.add("<h4>" + s.substring(5) + "</h4>\n");
 
-                else if (s.substring(0, 3).contains(MarkdownSymbols.H3))
+                else if (s.substring(0, 3).contains(MarkdownHeaders.H3))
                     resultHTML.add("<h3>" + s.substring(4) + "</h3>\n");
 
-                else if (s.substring(0, 2).contains(MarkdownSymbols.H2))
+                else if (s.substring(0, 2).contains(MarkdownHeaders.H2))
                     resultHTML.add("<h2>" + s.substring(3) + "</h2>\n");
 
-                else if (s.substring(0, 1).contains(MarkdownSymbols.H1))
+                else if (s.substring(0, 1).contains(MarkdownHeaders.H1))
                     resultHTML.add("<h1>" + s.substring(2) + "</h1>\n");
             }
             else if (matcher.lookingAt()) { //Check img

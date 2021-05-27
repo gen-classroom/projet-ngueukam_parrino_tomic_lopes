@@ -9,9 +9,11 @@ import picocli.CommandLine;
 import static ch.heigvd.statique.config.AppPaths.CONTENT;
 import static ch.heigvd.statique.config.AppPaths.TEMPLATE;
 import static ch.heigvd.statique.config.AppTemplates.*;
+import static ch.heigvd.statique.utils.Utils.writeFile;
 
 /**
- *
+ * Class representing the init command,
+ * allows to create a basic project for a static web site
  */
 @CommandLine.Command(name = "init", description = "Initialise projet")
 public class Init implements Callable<Integer> {
@@ -19,32 +21,35 @@ public class Init implements Callable<Integer> {
     @CommandLine.Parameters(index = "0")
     String userPath;
 
+    /**
+     * Function called when the "init" command is invoked
+     * @return Returns 1 if the project was correctly created,
+     *         Returns -1 if an error occurred during the creation or writing of the files
+     */
     @Override
-    public Integer call() throws IOException {
-        initializeApp();
-        return 1;
+    public Integer call() {
+        return initializeApp();
     }
 
     /**
      * Create base folders and files
+     * and writes the basic content
      */
-    private void initializeApp() throws IOException {
-
+    private Integer initializeApp() {
 
         String pathInitFolder = "";
 
-        //QUESTION: IL faut aussi prevoir "\" (linux) ??
         String[] folders = userPath.split("/");
 
         try {
 
-            for (int i =0; i < folders.length; ++i) {
+            for (int i = 0; i < folders.length; ++i) {
                 pathInitFolder += folders[i];
                 File file = new File(pathInitFolder);
                 if (!file.exists()) {
                     file.mkdir();
                 }
-                if(i != folders.length - 1)
+                if (i != folders.length - 1)
                     pathInitFolder += "\\";
             }
 
@@ -70,56 +75,36 @@ public class Init implements Callable<Integer> {
             File layoutIndexFile = new File(folderTemplate.getAbsolutePath() + "\\layoutIndex.html");
             File layoutPageFile = new File(folderTemplate.getAbsolutePath() + "\\layoutPage.html");
 
-            try {//WRITING
+            try {//WRITING FILES
 
                 //index.md
-                FileWriter myWriter = new FileWriter(indexFile);
-                myWriter.write(indexTemplate);
-                myWriter.close();
+                writeFile(indexFile, indexTemplate);
                 //page.md
-                myWriter = new FileWriter(pageFile);
-                myWriter.write(pageTemplate);
-                myWriter.close();
+                writeFile(pageFile, pageTemplate);
                 //config.json
-                myWriter = new FileWriter(configFile);
-                myWriter.write(configJSON);
-                myWriter.close();
+                writeFile(configFile, configJSON);
                 //layoutIndex.html
-                myWriter = new FileWriter(layoutIndexFile);
-                myWriter.write(layoutIndexTemplate);
-                myWriter.close();
+                writeFile(layoutIndexFile, layoutIndexTemplate);
                 //layoutPage.html
-                myWriter = new FileWriter(layoutPageFile);
-                myWriter.write(layoutPageTemplate);
-                myWriter.close();
+                writeFile(layoutPageFile, menuIndexTemplate);
                 //menuIndex.html
-                myWriter = new FileWriter(menuIndexFile);
-                myWriter.write(menuIndexTemplate);
-                myWriter.close();
+                writeFile(menuIndexFile, menuIndexTemplate);
                 //menuPage.html
-                myWriter = new FileWriter(menuPageFile);
-                myWriter.write(menuPageTemplate);
-                myWriter.close();
+                writeFile(menuPageFile, menuPageTemplate);
                 //image.png
-                myWriter = new FileWriter(imageFile);
-                myWriter.write("");
-                myWriter.close();
-
-
-                System.out.println("Successfully wrote to the file.");
+                writeFile(imageFile, "");
 
             } catch (IOException e) {
-                System.out.println("An error occurred.");
+                System.out.println("An error occurred when file writing.");
                 e.printStackTrace();
+                return -1;
             }
 
-        } catch( Exception e) {
+        } catch (Exception e) {
             System.out.println("An error occurred in files creations");
+            e.printStackTrace();
+            return -1;
         }
-
-
-
-
+        return 1;
     }
-
 }

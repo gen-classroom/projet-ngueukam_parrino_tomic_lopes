@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.util.concurrent.Callable;
 
 /**
- *
+ * Class representing the serve command,
+ * allows you to open your static website in your default browser
  */
 @CommandLine.Command(name = "serve", description = "serve")
 public class Serve implements Callable<Integer> {
@@ -16,11 +17,12 @@ public class Serve implements Callable<Integer> {
     @CommandLine.Parameters(index = "0")
     String userPath;
 
+    /**
+     * Function called when the "serve" command is invoked
+     */
     @Override
     public Integer call() {
-//        System.out.println("serve command on " + userPath);
-        String path = userPath;
-        File root = new File(path);
+        File root = new File(userPath);
         // On récupère le dossier build
         File buildDirectory = getBuildFolder(root);
         if (buildDirectory == null) {   // On affiche un message d'erreur si pas trouvé et on interrompt l'exécution
