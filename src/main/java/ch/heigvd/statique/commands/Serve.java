@@ -16,6 +16,9 @@ public class Serve implements Callable<Integer> {
     @CommandLine.Parameters(index = "0")
     String userPath;
 
+    @CommandLine.Option(names = "--watch")
+    boolean option;
+
     @Override
     public Integer call() {
 //        System.out.println("serve command on " + userPath);

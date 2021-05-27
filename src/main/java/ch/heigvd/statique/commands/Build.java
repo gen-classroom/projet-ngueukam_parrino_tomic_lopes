@@ -7,6 +7,7 @@ import ch.heigvd.statique.entities.Metadata;
 import ch.heigvd.statique.parser.MDParser;
 import picocli.CommandLine;
 import java.io.*;
+import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
@@ -22,6 +23,9 @@ public class Build implements Callable<Integer> {
     @CommandLine.Parameters(index = "0")
     String userPath;
 
+    @CommandLine.Option(names = "--watch")
+    boolean option;
+
     @Override
     public Integer call() throws Exception {
         buildProject();
@@ -35,7 +39,6 @@ public class Build implements Callable<Integer> {
 
         // Get Path
         String path = userPath;
-
         try {
 
             path += BUILD;
@@ -122,6 +125,13 @@ public class Build implements Callable<Integer> {
         assert reader != null; //for warning
 
         return gson.fromJson(reader, AppConfiguration.class);
+    }
+
+    private class Watch  {
+        public void updateOnChanged() {
+
+        }
+
     }
 
 }
