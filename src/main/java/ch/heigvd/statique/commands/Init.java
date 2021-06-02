@@ -1,7 +1,6 @@
 package ch.heigvd.statique.commands;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
@@ -86,7 +85,7 @@ public class Init implements Callable<Integer> {
                 //layoutIndex.html
                 writeFile(layoutIndexFile, layoutIndexTemplate);
                 //layoutPage.html
-                writeFile(layoutPageFile, menuIndexTemplate);
+                writeFile(layoutPageFile, layoutPageTemplate);
                 //menuIndex.html
                 writeFile(menuIndexFile, menuIndexTemplate);
                 //menuPage.html

@@ -5,7 +5,8 @@ import picocli.CommandLine;
 import java.util.concurrent.Callable;
 
 /**
- *
+ * Class representing the version command,
+ * allows you to see the current version
  */
 @CommandLine.Command(name = "-version", description = "Retourne la version du programme.")
 public class Version implements Callable<Integer> {

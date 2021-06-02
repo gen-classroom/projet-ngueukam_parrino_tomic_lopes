@@ -13,7 +13,8 @@ import java.util.concurrent.Callable;
 import static ch.heigvd.statique.config.AppPaths.*;
 
 /**
- *
+ * Class representing the clean command,
+ * allows you to build your static site
  */
 @CommandLine.Command(name = "build", description = "Build project")
 public class Build implements Callable<Integer> {
@@ -29,7 +30,7 @@ public class Build implements Callable<Integer> {
     }
 
     /**
-     *
+     * Create base folder and files
      */
     private void initBuild() {
 
@@ -57,69 +58,57 @@ public class Build implements Callable<Integer> {
     }
 
     /**
-     *
+     * Injects all pages of the static site
      * @throws Exception
      */
     private void buildProject() throws Exception {
 
         initBuild();
 
-        Engine engine = new Engine(userPath + TEMPLATE);
+        injectFile("index", "layoutIndex.html");
+        injectFile(CONTENT + "\\page", "layoutPage.html");
 
-        MDParser parser = new MDParser(userPath + "\\index.md");
-        Metadata meta = createMetadataObject(parser.getMetadata());
+    }
+
+    /**
+     * Insert data extracted from markdown files into html templates
+     * @param filePath name of the file to be created without extension (with relative path)
+     * @param layout file template
+     */
+    private void injectFile(String filePath, String layout) throws Exception {
+
+        Engine engine = new Engine(userPath + TEMPLATE);
+        MDParser parser = new MDParser(userPath + "\\" + filePath + ".md");
+
+        // Get Metadata
+        Metadata meta = parser.getMetadataObject();
+        // Get Content
         ArrayList<String> content = parser.getResultHTML();
+        // Get Configuration
         AppConfiguration config = createConfigObject();
 
-        engine.addMetadata(meta);
-        engine.addContent(content);
-        engine.addConfiguration(config);
+        // Pass the site information to the template engine
+        engine.setMetadata(meta);
+        engine.setContent(content);
+        engine.setConfiguration(config);
 
-        engine.write(userPath + BUILD + "/index.html", "layoutIndex.html");
-
-        parser = new MDParser(userPath + CONTENT + "\\page.md");
-        meta = createMetadataObject(parser.getMetadata());
-        content = parser.getResultHTML();
-        config = createConfigObject();
-
-        engine.addMetadata(meta);
-        engine.addContent(content);
-        engine.addConfiguration(config);
-
-        engine.write(userPath + BUILD + CONTENT + "/page.html", "layoutPage.html");
+        engine.write(userPath + BUILD  + "\\" + filePath + ".html", layout);
     }
 
     /**
-     *
-     * @param metadata
-     * @return
-     */
-    private Metadata createMetadataObject(ArrayList<String> metadata){
-        for(int i = 0; i < metadata.size(); ++i) {
-            int index = metadata.get(i).indexOf(':');
-            metadata.set(i, metadata.get(i).substring(index + 1));//+1 for blank space
-        }
-        String title = metadata.get(0);
-        String author = metadata.get(1);
-        String date = metadata.get(2);
-
-        return new Metadata(title,author,date);
-    }
-
-    /**
-     *
-     * @return
+     * Converts configuration file (json) into Java object of type AppConfiguration
+     * @return AppConfiguration object
      */
     private AppConfiguration createConfigObject(){
         Gson gson = new Gson();
         Reader reader = null;
         try {
-             reader = new FileReader(userPath + "/config.json");
+            reader = new FileReader(userPath + "/config.json");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        assert reader != null; //for warning
+        assert reader != null;
 
         return gson.fromJson(reader, AppConfiguration.class);
     }

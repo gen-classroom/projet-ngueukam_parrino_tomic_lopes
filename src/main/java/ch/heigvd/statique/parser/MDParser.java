@@ -1,5 +1,8 @@
 package ch.heigvd.statique.parser;
 
+
+import ch.heigvd.statique.entities.Metadata;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ public class MDParser {
 
     /**
      * Constructor
-     * @param path
+     * @param path file markdown path
      */
     public MDParser(String path){
         getDataFromMD(path);
@@ -111,6 +114,22 @@ public class MDParser {
             }
 
         }
+    }
+
+    /**
+     * Converts metadata strings into Java object of type Metadata
+     * @return Metadata object
+     */
+    public Metadata getMetadataObject(){
+        for(int i = 0; i < metadata.size(); ++i) {
+            int index = metadata.get(i).indexOf(':');
+            metadata.set(i, metadata.get(i).substring(index + 1));//+1 for blank space
+        }
+        String title = metadata.get(0);
+        String author = metadata.get(1);
+        String date = metadata.get(2);
+
+        return new Metadata(title,author,date);
     }
 
     /** Getter metadata */

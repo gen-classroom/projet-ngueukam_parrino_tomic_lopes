@@ -9,7 +9,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
 /**
- *
+ * Main application
  */
 @Command(
     name = "statique",
@@ -18,8 +18,8 @@ import picocli.CommandLine.Command;
 public class Statique implements Callable<Integer> {
 
   /**
-   *
-   * @param args
+   * Executes the command passed in argument
+   * @param args static site directory
    */
   public static void main(String... args) {
     int exitCode = new CommandLine(new Statique()).execute(args);
@@ -27,12 +27,10 @@ public class Statique implements Callable<Integer> {
   }
 
   /**
-   *
-   * @return
-   * @throws Exception
+   * Show available commands
    */
   @Override
-  public Integer call() throws Exception {
+  public Integer call() {
     CommandLine.usage(this, System.out);
     return 0;
   }

@@ -1,7 +1,7 @@
 package ch.heigvd.statique.config;
 
 /**
- *
+ * Basic file templates
  */
 public class AppTemplates {
 
@@ -61,12 +61,10 @@ public class AppTemplates {
                     "\t<li><a href=\"page.html\">page</a></li>\n" +
                     "</ul>\n";
 
-
     public static final String configJSON =
             "{\n" +
             "\"domain\": \"www.mon-site.com\",\n" +
             "\"title\": \"Mon site\"\n" +
             "}";
-
 
 }
