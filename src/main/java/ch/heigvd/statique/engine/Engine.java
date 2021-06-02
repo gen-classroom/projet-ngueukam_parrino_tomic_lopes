@@ -6,7 +6,8 @@ import java.util.*;
 import java.io.*;
 
 /**
- *
+ * Class representing the templating engine,
+ * uses Freemarker for file injection
  */
 public class Engine {
 
@@ -24,7 +25,7 @@ public class Engine {
     public Engine(String path) throws Exception {
 
         cfg.setDirectoryForTemplateLoading(new File(path));
-        // Recommended settings for new projects:
+        // Recommended settings for new projects
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setLogTemplateExceptions(false);
@@ -33,27 +34,19 @@ public class Engine {
 
     }
 
-    /**
-     *
-     * @param metadata
-     */
-    public void addMetadata(Metadata metadata){ root.put("page", metadata); }
+    /** Setter metadata */
+    public void setMetadata(Metadata metadata){ root.put("page", metadata); }
+
+    /** Setter configuration */
+    public void setConfiguration(AppConfiguration config){ root.put("site", config); }
+
+    /** Setter content */
+    public void setContent(ArrayList<String> content ){ root.put("content", content); }
 
     /**
-     *
-     * @param config
-     */
-    public void addConfiguration(AppConfiguration config){ root.put("site", config); }
-
-    /**
-     *
-     * @param content
-     */
-    public void addContent(ArrayList<String> content ){ root.put("content", content); }
-
-    /**
-     *
-     * @param path
+     * Processes the merge between the data model and the template
+     * @param path directory del file
+     * @param layout base template
      * @throws Exception
      */
     public void write(String path, String layout) throws Exception {
