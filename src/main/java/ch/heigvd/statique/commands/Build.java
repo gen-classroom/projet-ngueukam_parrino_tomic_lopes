@@ -23,6 +23,10 @@ public class Build implements Callable<Integer> {
     @CommandLine.Parameters(index = "0")
     String userPath;
 
+    /**
+     * Function called when the "clean" command is invoked
+     * @throws Exception
+     */
     @Override
     public Integer call() throws Exception {
         buildProject();

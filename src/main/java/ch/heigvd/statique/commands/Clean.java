@@ -17,11 +17,11 @@ public class Clean implements Callable<Integer> {
 
     /**
      * Function called when the "clean" command is invoked
-     * @return
+     * @return Returns 1 if the build folder was correctly deleted,
+     *         Returns -1 if an error occurred
      */
     @Override
     public Integer call() {
-
         return cleanProject();
     }
 
