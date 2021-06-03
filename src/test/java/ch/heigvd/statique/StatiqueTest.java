@@ -30,5 +30,5 @@ public class StatiqueTest {
       throw new Exception();
     });
   }
-
+  
 }
