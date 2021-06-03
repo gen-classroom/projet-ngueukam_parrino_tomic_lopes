@@ -1,5 +1,6 @@
 package ch.heigvd.statique.commands;
 
+import ch.heigvd.statique.commands.options.*;
 import picocli.CommandLine;
 
 import java.awt.*;
@@ -14,6 +15,7 @@ import java.util.concurrent.Callable;
 @CommandLine.Command(name = "serve", description = "serve")
 public class Serve implements Callable<Integer>, Executable {
 
+    int count = 0;
     @CommandLine.Parameters(index = "0")
     String userPath;
 
@@ -25,13 +27,11 @@ public class Serve implements Callable<Integer>, Executable {
      */
     @Override
     public Integer call() throws Exception {
+        execute();
         if (option) {
-            System.out.println(userPath);
+            System.out.println("Automatic serving file on update is now activate.");
             WatchOption watchOption = new WatchOption(userPath + "/build");
             watchOption.startWatch(this::execute);
-        }
-        else{
-            execute();
         }
         return 1;
     }
@@ -88,6 +88,7 @@ public class Serve implements Callable<Integer>, Executable {
         }
         try {   // On ouvre le fichier dans le navigateur.
             Desktop.getDesktop().browse(indexHtmlFile.toURI());
+            System.out.println("Successfull serve file.(" + count++ + ")");
         } catch (IOException e) {
             System.err.println("Unknow error occurs when trying to launch file in your default browser");
         }

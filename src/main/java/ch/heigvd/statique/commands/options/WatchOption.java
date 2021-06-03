@@ -1,4 +1,6 @@
-package ch.heigvd.statique.commands;
+package ch.heigvd.statique.commands.options;
+
+import ch.heigvd.statique.commands.Executable;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -11,7 +13,7 @@ public class WatchOption {
     private Path pathFolderToWatch;
     private WatchService watchService;
 
-    WatchOption(String pathFolderToWatch, String ... excludeFolders) throws IOException {
+    public WatchOption(String pathFolderToWatch, String ... excludeFolders) throws IOException {
         watchService = FileSystems.getDefault().newWatchService();
         this.pathFolderToWatch = Paths.get(pathFolderToWatch);
 //        System.out.println("Watching folder : " + pathFolderToWatch);
@@ -31,16 +33,19 @@ public class WatchOption {
         });
     }
 
-    void startWatch(Executable toExecute) throws Exception {
+    public void startWatch(Executable toExecute) throws Exception {
         WatchKey key;
         boolean update = false;
-        toExecute.execute();
         while (((key = watchService.take()) != null)) {
             for (WatchEvent<?> event : key.pollEvents()) {
                 // On ignore les fichiers temporaires créés par windows lors de la modification d'un fichier.
-                update = event.context().toString().charAt(event.context().toString().length() - 1) != '~';
+                update = event.context().toString().contains(".") && event.context().toString().charAt(event.context().toString().length() - 1) != '~';
+                if (update) {
+                    System.out.println(event.context());
+                }
             }
             if (update) {
+
                 toExecute.execute();
                 update = false;
             }
