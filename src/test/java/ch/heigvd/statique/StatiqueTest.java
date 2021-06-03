@@ -55,7 +55,7 @@ public class StatiqueTest {
   @Test
   // Ce test devrait juste récupérer le contenu d'un dossier fraichement crée, et vérifier si celui-ci contient les fichiers à créer
   void init() throws Exception {
-    private final String path = "test";
+    final String path = "test";
     new CommandLine(new Statique()).execute("init " + path);
     assertTrue(output.toString().contains(""));
   }
@@ -77,7 +77,7 @@ public class StatiqueTest {
   @Test
   // La même que init, mais pour les fichiers de build
   void build() throws Exception {
-    private final String path = "test";
+    final String path = "test";
     new CommandLine(new Statique()).execute("build " + path);
     assertTrue(output.toString().contains(""));
   }
