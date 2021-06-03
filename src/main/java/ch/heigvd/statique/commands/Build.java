@@ -7,6 +7,7 @@ import ch.heigvd.statique.entities.Metadata;
 import ch.heigvd.statique.parser.MDParser;
 import picocli.CommandLine;
 import java.io.*;
+import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
@@ -17,11 +18,14 @@ import static ch.heigvd.statique.config.AppPaths.*;
  * allows you to build your static site
  */
 @CommandLine.Command(name = "build", description = "Build project")
-public class Build implements Callable<Integer> {
+public class Build implements Callable<Integer>, Executable {
 
     //Get user path
     @CommandLine.Parameters(index = "0")
     String userPath;
+
+    @CommandLine.Option(names = "--watch")
+    boolean option;
 
     /**
      * Function called when the "clean" command is invoked
@@ -29,7 +33,10 @@ public class Build implements Callable<Integer> {
      */
     @Override
     public Integer call() throws Exception {
-        buildProject();
+        if (option) {
+            WatchOption watchOption = new WatchOption(userPath, "build");
+            watchOption.startWatch(this::execute);
+        }
         return 1;
     }
 
@@ -40,7 +47,6 @@ public class Build implements Callable<Integer> {
 
         // Get Path
         String path = userPath;
-
         try {
 
             path += BUILD;
@@ -62,6 +68,9 @@ public class Build implements Callable<Integer> {
     }
 
     /**
+     *
+     * @param metadata
+     * @return
      * Injects all pages of the static site
      * @throws Exception
      */
@@ -117,4 +126,35 @@ public class Build implements Callable<Integer> {
         return gson.fromJson(reader, AppConfiguration.class);
     }
 
+    @Override
+    public void execute() throws Exception {
+        System.out.println("Build site");
+        // On crée le dossier build uniquement s'il n'existe pas.
+        if (!(new File(userPath + BUILD).exists()))
+            initBuild();
+
+        Engine engine = new Engine(userPath + TEMPLATE);
+
+        MDParser parser = new MDParser(userPath + "\\index.md");
+        Metadata meta = createMetadataObject(parser.getMetadata());
+        ArrayList<String> content = parser.getResultHTML();
+        AppConfiguration config = createConfigObject();
+
+        engine.addMetadata(meta);
+        engine.addContent(content);
+        engine.addConfiguration(config);
+
+        engine.write(userPath + BUILD + "/index.html", "layoutIndex.html");
+
+        parser = new MDParser(userPath + CONTENT + "\\page.md");
+        meta = createMetadataObject(parser.getMetadata());
+        content = parser.getResultHTML();
+        config = createConfigObject();
+
+        engine.addMetadata(meta);
+        engine.addContent(content);
+        engine.addConfiguration(config);
+
+        engine.write(userPath + BUILD + CONTENT + "/page.html", "layoutPage.html");
+    }
 }
