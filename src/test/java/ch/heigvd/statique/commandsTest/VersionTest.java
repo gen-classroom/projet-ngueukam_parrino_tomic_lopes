@@ -35,7 +35,7 @@ public class VersionTest {
             output.reset();
             cmd.execute(args);
             String[] result = output.toString().split("version : \\d{1,2}\\.\\d{1,2}\\.\\d{1,2}");
-            assertTrue(result.length != 0);
+            assertTrue(result.length == 2);
         } catch (Exception e){
             assertTrue("Could run the test".equals("true"));
         }
