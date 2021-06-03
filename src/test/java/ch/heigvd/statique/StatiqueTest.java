@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
 
-class StatiqueTest {
+public class StatiqueTest {
 
   private final ByteArrayOutputStream output = new ByteArrayOutputStream();
 
@@ -23,7 +23,7 @@ class StatiqueTest {
   }
 
   @Test
-  void result() throws Exception {
+  public void result() throws Exception {
     int exitCode = new CommandLine(new Statique()).execute();
     assertEquals(exitCode, 0);
     assertThrows(Exception.class, () -> {
@@ -32,14 +32,14 @@ class StatiqueTest {
   }
 
   @Test
-  void output() throws Exception {
+  public void output() throws Exception {
     new CommandLine(new Statique()).execute("init");
     assertTrue(output.toString().contains("init"));
   }
 
 
   @Test
-  void version() throws Exception {
+  public void version() throws Exception {
 
     new CommandLine(new Statique()).execute("-version");
     assertTrue(output.toString().contains("Version: 0.0.2"));
