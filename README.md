@@ -4,7 +4,7 @@
 
 ## About The Project
 
-This software allows the generation of a static HTML website, It was developed in the context of a school project at HEIG-VD.
+This software allows the generation of a **static HTML website**, It was developed in the context of a school project at HEIG-VD.
 
 ### Built With
 
@@ -13,6 +13,7 @@ The following technologies were used to develop the project:
 * [Maven](https://maven.apache.org/)
 * [picocli](https://picocli.info/)
 * [JUnit 5](https://junit.org/junit5/)
+* [Freemarker](https://freemarker.apache.org/)
 
 
 
@@ -58,23 +59,26 @@ Here is a list of available commands:
 
   `statique -version`
 
-* Coming soon
+* Opens the site in your default browser
 
   `statique serve PATH`
 
-After creating the template with the `init` command, you can edit the index.md according to your needs, and then use the ``build`` command to create your static site.
+After creating the template with the `init` command, you can edit the **index.md** according to your needs, and then use the ``build`` command to create your static site.
 
-The configuration settings of the static site are on config.yaml like this:
+The configuration settings of the static site are on **config.json** like this:
 
-`domaine : www.mon-site.com`
-
-`titre: "Mon site"`
+```json
+{
+"domain": "www.mon-site.com",
+"title": "Mon site"
+}
+```
 
 Here is the structure of the base sheet :
 
 **Metadata:**
 
- ```sh
+ ```markdown
 titre: Mon premier article  
 auteur: Nom Prenom 
 date: YY-MM-DD
@@ -86,7 +90,7 @@ date: YY-MM-DD
 
 **Content**
 
- ```sh
+ ```markdown
 # Mon premier article
 ## Mon sous-titre
 le contenu de mon article
@@ -95,9 +99,9 @@ le contenu de mon article
 
 **Result Example**
 
-The file layout.html is the template of the static site. The content is inserted into the body of the template and the metadata in the head. Below result of the body of the template.
+The file **layout.html** is the template of the static site. The content is inserted into the body of the template and the metadata in the head. Below result of the body of the template.
 
- ```sh
+ ```html
 <h1>Mon premier article</h1>  
 <h2>Mon sous-titre</h2>  
 <p>le contenu de mon article</p>  
