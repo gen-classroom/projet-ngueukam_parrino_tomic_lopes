@@ -1,9 +1,9 @@
 package ch.heigvd.statique.parser;
 
 /**
- *
+ * Class representing Markdown headers
  */
-public class MarkdownSymbols {
+public class MarkdownHeaders {
     public static final String H1  = "#";
     public static final String H2  = "##";
     public static final String H3  = "###";

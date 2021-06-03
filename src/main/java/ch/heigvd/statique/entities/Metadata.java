@@ -1,7 +1,7 @@
 package ch.heigvd.statique.entities;
 
 /**
- *
+ * Class representing the metadata of an html page
  */
 public class Metadata {
     private final String title;
@@ -9,7 +9,7 @@ public class Metadata {
     private final String date;
 
     /**
-     *
+     * Constructor
      * @param title
      * @param author
      * @param date
