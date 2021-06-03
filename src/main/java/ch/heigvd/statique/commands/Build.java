@@ -17,7 +17,7 @@ import static ch.heigvd.statique.config.AppPaths.*;
  *
  */
 @CommandLine.Command(name = "build", description = "Build project")
-public class Build implements Callable<Integer> {
+public class Build implements Callable<Integer>, Executable {
 
     //Get user path
     @CommandLine.Parameters(index = "0")
@@ -28,7 +28,10 @@ public class Build implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        buildProject();
+        if (option) {
+            WatchOption watchOption = new WatchOption(userPath, "build");
+            watchOption.startWatch(this::execute);
+        }
         return 1;
     }
 
@@ -57,39 +60,6 @@ public class Build implements Callable<Integer> {
             e.printStackTrace();
         }
 
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    private void buildProject() throws Exception {
-
-        initBuild();
-
-        Engine engine = new Engine(userPath + TEMPLATE);
-
-        MDParser parser = new MDParser(userPath + "\\index.md");
-        Metadata meta = createMetadataObject(parser.getMetadata());
-        ArrayList<String> content = parser.getResultHTML();
-        AppConfiguration config = createConfigObject();
-
-        engine.addMetadata(meta);
-        engine.addContent(content);
-        engine.addConfiguration(config);
-
-        engine.write(userPath + BUILD + "/index.html", "layoutIndex.html");
-
-        parser = new MDParser(userPath + CONTENT + "\\page.md");
-        meta = createMetadataObject(parser.getMetadata());
-        content = parser.getResultHTML();
-        config = createConfigObject();
-
-        engine.addMetadata(meta);
-        engine.addContent(content);
-        engine.addConfiguration(config);
-
-        engine.write(userPath + BUILD + CONTENT + "/page.html", "layoutPage.html");
     }
 
     /**
@@ -127,11 +97,35 @@ public class Build implements Callable<Integer> {
         return gson.fromJson(reader, AppConfiguration.class);
     }
 
-    private class Watch  {
-        public void updateOnChanged() {
+    @Override
+    public void execute() throws Exception {
+        System.out.println("Build site");
+        // On crée le dossier build uniquement s'il n'existe pas.
+        if (!(new File(userPath + BUILD).exists()))
+            initBuild();
 
-        }
+        Engine engine = new Engine(userPath + TEMPLATE);
 
+        MDParser parser = new MDParser(userPath + "\\index.md");
+        Metadata meta = createMetadataObject(parser.getMetadata());
+        ArrayList<String> content = parser.getResultHTML();
+        AppConfiguration config = createConfigObject();
+
+        engine.addMetadata(meta);
+        engine.addContent(content);
+        engine.addConfiguration(config);
+
+        engine.write(userPath + BUILD + "/index.html", "layoutIndex.html");
+
+        parser = new MDParser(userPath + CONTENT + "\\page.md");
+        meta = createMetadataObject(parser.getMetadata());
+        content = parser.getResultHTML();
+        config = createConfigObject();
+
+        engine.addMetadata(meta);
+        engine.addContent(content);
+        engine.addConfiguration(config);
+
+        engine.write(userPath + BUILD + CONTENT + "/page.html", "layoutPage.html");
     }
-
 }
