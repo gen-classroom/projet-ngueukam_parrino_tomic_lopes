@@ -12,33 +12,26 @@ import java.util.concurrent.Callable;
  * allows you to open your static website in your default browser
  */
 @CommandLine.Command(name = "serve", description = "serve")
-public class Serve implements Callable<Integer> {
+public class Serve implements Callable<Integer>, Executable {
 
     @CommandLine.Parameters(index = "0")
     String userPath;
+
+    @CommandLine.Option(names = "--watch")
+    boolean option;
 
     /**
      * Function called when the "serve" command is invoked
      */
     @Override
-    public Integer call() {
-        File root = new File(userPath);
-        // We retrieve the build folder
-        File buildDirectory = getBuildFolder(root);
-        if (buildDirectory == null) {   // An error message is displayed if not found and the execution is interrupted
-            System.err.println("No Build directory Found. You should make a build command first.");
-            return 0;
+    public Integer call() throws Exception {
+        if (option) {
+            System.out.println(userPath);
+            WatchOption watchOption = new WatchOption(userPath + "/build");
+            watchOption.startWatch(this::execute);
         }
-        // We retrieve the index.html file from the build folder
-        File indexHtmlFile = getIndexHtmlFile(buildDirectory);
-        if (indexHtmlFile == null) {    // On affiche un message d'erreur si pas trouvé et on interrompt l'exécution
-            System.err.println("An error occurs. index.html file not found. Please run build command");
-            return 0;
-        }
-        try {   // On ouvre le fichier dans le navigateur.
-            Desktop.getDesktop().browse(indexHtmlFile.toURI());
-        } catch (IOException e) {
-            System.err.println("Unknow error occurs when trying to launch file in your default browser");
+        else{
+            execute();
         }
         return 1;
     }
@@ -61,23 +54,6 @@ public class Serve implements Callable<Integer> {
     }
 
     /**
-     * Retourne le fichier ou le dossier correspondant au nom passer en paramètre si celui si se trouve dans le dossier
-     * @param rootFolder : Dossier où on cherche le fichier ou le dossier
-     * @param fileName : Nom du fichier ou dossier à cherche
-     * @return le fichier ou le dossier concerné ou null si pas trouvé
-     */
-//    private File getFileOrFolderWithGivenName(File rootFolder, String fileName) {
-//        File[] files = rootFolder.listFiles();
-//        if (files != null) {
-//            for (File f : files) {
-//                if ((f.isFile() || f.isDirectory()) && f.getName().equals(fileName))
-//                    return f;
-//            }
-//        }
-//        return null;
-//    }
-
-    /**
      * Returns the index.html file if it exists or null if it does not exist.
      * @param BuildDirectory : The build folder where we look for the index.html file
      * @return The index.html file or null if not found
@@ -91,5 +67,29 @@ public class Serve implements Callable<Integer> {
             }
         }
         return null;
+    }
+
+    @Override
+    public void execute() {
+        String path = userPath;
+        File root = new File(path);
+
+        // On récupère le dossier build
+        File buildDirectory = getBuildFolder(root);
+        if (buildDirectory == null) {   // On affiche un message d'erreur si pas trouvé et on interrompt l'exécution
+            System.err.println("No Build directory Found. You should make a build command first.");
+            return ;
+        }
+        // On récupère le fichier index.html depuis le dossier build
+        File indexHtmlFile = getIndexHtmlFile(buildDirectory);
+        if (indexHtmlFile == null) {    // On affiche un message d'erreur si pas trouvé et on interrompt l'exécution
+            System.err.println("An error occurs. index.html file not found. Please run build command");
+            return ;
+        }
+        try {   // On ouvre le fichier dans le navigateur.
+            Desktop.getDesktop().browse(indexHtmlFile.toURI());
+        } catch (IOException e) {
+            System.err.println("Unknow error occurs when trying to launch file in your default browser");
+        }
     }
 }

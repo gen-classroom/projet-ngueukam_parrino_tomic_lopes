@@ -7,6 +7,7 @@ import ch.heigvd.statique.entities.Metadata;
 import ch.heigvd.statique.parser.MDParser;
 import picocli.CommandLine;
 import java.io.*;
+import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
@@ -17,11 +18,14 @@ import static ch.heigvd.statique.config.AppPaths.*;
  * allows you to build your static site
  */
 @CommandLine.Command(name = "build", description = "Build project")
-public class Build implements Callable<Integer> {
+public class Build implements Callable<Integer>, Executable {
 
     //Get user path
     @CommandLine.Parameters(index = "0")
     String userPath;
+
+    @CommandLine.Option(names = "--watch")
+    boolean option;
 
     /**
      * Function called when the "clean" command is invoked
@@ -29,7 +33,13 @@ public class Build implements Callable<Integer> {
      */
     @Override
     public Integer call() throws Exception {
-        buildProject();
+        if (option) {
+            WatchOption watchOption = new WatchOption(userPath, "build");
+            watchOption.startWatch(this::execute);
+        }
+        else {
+            execute();
+        }
         return 1;
     }
 
@@ -40,7 +50,6 @@ public class Build implements Callable<Integer> {
 
         // Get Path
         String path = userPath;
-
         try {
 
             path += BUILD;
@@ -65,7 +74,8 @@ public class Build implements Callable<Integer> {
      * Injects all pages of the static site
      * @throws Exception
      */
-    private void buildProject() throws Exception {
+    @Override
+    public void execute() throws Exception {
 
         initBuild();
 
