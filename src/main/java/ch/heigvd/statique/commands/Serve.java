@@ -20,37 +20,22 @@ public class Serve implements Callable<Integer>, Executable {
     @CommandLine.Option(names = "--watch")
     boolean option;
 
+    /**
+     * Function called when the "serve" command is invoked
+     */
     @Override
     public Integer call() throws Exception {
         if (option) {
             System.out.println(userPath);
             WatchOption watchOption = new WatchOption(userPath + "/build");
             watchOption.startWatch(this::execute);
-    /**
-     * Function called when the "serve" command is invoked
-     */
-    @Override
-    public Integer call() {
-        File root = new File(userPath);
-        // We retrieve the build folder
-        File buildDirectory = getBuildFolder(root);
-        if (buildDirectory == null) {   // An error message is displayed if not found and the execution is interrupted
-            System.err.println("No Build directory Found. You should make a build command first.");
-            return 0;
         }
-        // We retrieve the index.html file from the build folder
-        File indexHtmlFile = getIndexHtmlFile(buildDirectory);
-        if (indexHtmlFile == null) {    // On affiche un message d'erreur si pas trouvé et on interrompt l'exécution
-            System.err.println("An error occurs. index.html file not found. Please run build command");
-            return 0;
-        }
-        try {   // On ouvre le fichier dans le navigateur.
-            Desktop.getDesktop().browse(indexHtmlFile.toURI());
-        } catch (IOException e) {
-            System.err.println("Unknow error occurs when trying to launch file in your default browser");
+        else{
+            execute();
         }
         return 1;
     }
+
     /**
      *  Retrieves the build folder if it exists. returns null if not found
      * @param siteDirectory  Root of our static site

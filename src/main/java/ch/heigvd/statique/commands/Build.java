@@ -37,6 +37,9 @@ public class Build implements Callable<Integer>, Executable {
             WatchOption watchOption = new WatchOption(userPath, "build");
             watchOption.startWatch(this::execute);
         }
+        else {
+            execute();
+        }
         return 1;
     }
 
@@ -68,13 +71,11 @@ public class Build implements Callable<Integer>, Executable {
     }
 
     /**
-     *
-     * @param metadata
-     * @return
      * Injects all pages of the static site
      * @throws Exception
      */
-    private void buildProject() throws Exception {
+    @Override
+    public void execute() throws Exception {
 
         initBuild();
 
@@ -126,35 +127,4 @@ public class Build implements Callable<Integer>, Executable {
         return gson.fromJson(reader, AppConfiguration.class);
     }
 
-    @Override
-    public void execute() throws Exception {
-        System.out.println("Build site");
-        // On crée le dossier build uniquement s'il n'existe pas.
-        if (!(new File(userPath + BUILD).exists()))
-            initBuild();
-
-        Engine engine = new Engine(userPath + TEMPLATE);
-
-        MDParser parser = new MDParser(userPath + "\\index.md");
-        Metadata meta = createMetadataObject(parser.getMetadata());
-        ArrayList<String> content = parser.getResultHTML();
-        AppConfiguration config = createConfigObject();
-
-        engine.addMetadata(meta);
-        engine.addContent(content);
-        engine.addConfiguration(config);
-
-        engine.write(userPath + BUILD + "/index.html", "layoutIndex.html");
-
-        parser = new MDParser(userPath + CONTENT + "\\page.md");
-        meta = createMetadataObject(parser.getMetadata());
-        content = parser.getResultHTML();
-        config = createConfigObject();
-
-        engine.addMetadata(meta);
-        engine.addContent(content);
-        engine.addConfiguration(config);
-
-        engine.write(userPath + BUILD + CONTENT + "/page.html", "layoutPage.html");
-    }
 }
