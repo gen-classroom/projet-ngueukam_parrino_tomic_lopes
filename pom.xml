@@ -4,7 +4,7 @@
 
   <groupId>ch.heigvd</groupId>
   <artifactId>statique</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3-SNAPSHOT</version>
 
   <name>statique</name>
 
@@ -19,7 +19,7 @@
     <connection>scm:git:git@github.com:gen-classroom/projet-ngueukam_parrino_tomic_lopes.git</connection>
     <developerConnection>${scm.connection}</developerConnection>
     <url>https://github.com/gen-classroom/projet-ngueukam_parrino_tomic_lopes</url>
-    <tag>0.0.2</tag>
+    <tag>@{project.version}</tag>
   </scm>
 
   <dependencies>
