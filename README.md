@@ -1,3 +1,6 @@
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/gen-classroom/projet-ngueukam_parrino_tomic_lopes.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/gen-classroom/projet-ngueukam_parrino_tomic_lopes/alerts/)
+[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/gen-classroom/projet-ngueukam_parrino_tomic_lopes.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/gen-classroom/projet-ngueukam_parrino_tomic_lopes/context:java)
+
 **Authors:** Parrino Alessandro, Rui Filipe Lopes Gouveia, Tomic Mario and Ngueukam Djeuda Wilfried Karel.
 
 <!-- ABOUT THE PROJECT -->
