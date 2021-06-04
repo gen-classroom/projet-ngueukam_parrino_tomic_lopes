@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CleanTest {
 
-    private String projectPath = "/project";
+    private String projectPath = "/cleantest";
     private String buildPath = "/build";
 
     @Test
@@ -45,5 +45,13 @@ public class CleanTest {
         assertFalse(initFolder.exists());
         assertTrue(buildFolder.exists());
         assertEquals(buildFolder.listFiles().length, 0);
+
+
+        randomFolderFile.delete();
+        randomFolder.delete();
+        randomFile.delete();
+        initFolder.delete();
+        buildFolder.delete();
+
     }
 }
