@@ -1,5 +1,6 @@
 package ch.heigvd.statique.commands;
 
+import ch.heigvd.statique.commands.options.*;
 import com.google.gson.Gson;
 import ch.heigvd.statique.config.AppConfiguration;
 import ch.heigvd.statique.engine.Engine;
@@ -7,7 +8,6 @@ import ch.heigvd.statique.entities.Metadata;
 import ch.heigvd.statique.parser.MDParser;
 import picocli.CommandLine;
 import java.io.*;
-import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
@@ -33,12 +33,11 @@ public class Build implements Callable<Integer>, Executable {
      */
     @Override
     public Integer call() throws Exception {
+        execute();
         if (option) {
+            System.out.println("Automatic building file on update is now activate.");
             WatchOption watchOption = new WatchOption(userPath, "build");
             watchOption.startWatch(this::execute);
-        }
-        else {
-            execute();
         }
         return 1;
     }
@@ -76,11 +75,16 @@ public class Build implements Callable<Integer>, Executable {
      */
     @Override
     public void execute() throws Exception {
-
-        initBuild();
+        // On crée le dossier build uniquement s'il n'existe pas.
+        if (!(new File(userPath + BUILD).exists())) {
+            initBuild();
+            System.out.println("Creating build folder successfully.");
+        }
 
         injectFile("index", "layoutIndex.html");
         injectFile(CONTENT + "\\page", "layoutPage.html");
+
+        System.out.println("Successfully build project");
 
     }
 
